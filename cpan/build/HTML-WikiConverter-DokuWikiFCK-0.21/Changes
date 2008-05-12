@@ -1,0 +1,116 @@
+Revision history for Perl extension HTML::WikiConverter::DokuWikiFCK.
+
+0.07  Fri Jan 25 18:13:06 2008
+	- original version; created by h2xs 1.23 with options
+		-XA -n HTML::WikiConverter::DokuWikiFCK
+
+0.08 Mon Jan 28 11:47:00 2008
+       - removed 'use 5.00.08' from Makefile.PL, causing the make to fail with
+         earlier versions of Perl       
+
+0.09 Tue Jan 29 07:56:41 2008	 
+      - fixed image urls so that they retain size info, which would be lost after re-saving
+        of files
+      - removed superfluous runs of  <align left> tags followed by DokuWiki line breaks, as in:
+           <align left>
+	   </align>\\
+
+0.10 Thu Jan 31 2008
+        -Revised indent.php (in fckg/syntax) to compensate for what may be a bug in IE, where
+         it does not recognize the color attribute of the <indent> tag, so that the middle dots
+         are printed to the screen.  Now we use middle dots in DokuWikiFCK, but convert them to &nbsp;
+         in indent.php for putput to the screen.  The &nbsp; are converted back to middle dots for
+         saving to the DokuWiki file.
+
+	-Removed Term::ReadLine from Makefile.PL, after Perl Tests on freebsd reported 
+         failures. Used <STDIN> instead.
+
+        -Removed empty <indent> tags during postprocess (DokuWikiFCK.pm)
+
+        -Fixed image handling so that when image is fetched from root namespace a colon
+         is prepended to the file name:  {{:root_image.gif}}
+         Otherwise, when the image is accessed from a subdirectory of root, it is accessed
+         as though the image is in the media directory for that subdirectory and so not found 
+
+        -Fixed failure of FCKeditor fck_image.js to find namespace when openining DokuWiki
+        mediamanager for uploading images.  Problem was with finding  'top' window.
+        Added to fckeditor/fckconfig.js:
+			FCK.getCurrentWikiNS = function () {
+			 var ns = "";
+			 if(top.getCurrentWikiNS) {
+			     ns = top.getCurrentWikiNS();
+			 }
+
+			  return ns;
+			}
+         top.getCurrentWikiNS is output by fckg/helper.php into main.php and returns 
+         the current namespace.  
+
+0.12 Mon Feb 4 2008
+	 -Fixed image handling so that external (and possibly internal) images (starting
+	  with http://) are handled output correctly.
+	 -Continued to work on indent feature.  There is a difference between FireFox and IE
+	  in the handlng of &nbsp; characters in the FCKeditor.  I believe this is now fixed
+	  so that &nbsp; characters in both browsers work the same.
+	   
+0.13 Sat Feb 9 2008
+         -Added check-box to edit form to disable lock-timer by groups designated in Configuration Manager.
+          The default setting is ANY (i.e. anyone has permission).  
+
+0.15 Monday Feb 11 2008   
+	-Added action/cache and re-worked syntax/indent.php. Addresses inconsistencies between
+	 IE and Firefox in handling of space character (this is ongoing: see 0.10 and 0.12 above) 
+        -Added DokuWiki header styles to fckeditor/editor/css/fck_editorarea.css
+
+0.17 Thursday Feb 21 2008
+        -Added plugin tool to FCK toolbar, which allows user to select syntax text for syntax 
+         DokuWiki plugins so as to maintain their integrity -- keps them from disappearing, or
+         getting corrupted, or having any text permanently written to the DokuWiki text file.
+        -Added buttons which enable user to switch between DokuWiki Editor and FCKeditor and
+         gives user choice of whether to backup the FCK file (with its exteneded syntax) and to
+         start the DokuWiki editor with a clean file of the same name.
+         -Fixed bug in _span_contents() which accidentally deleted the beginning of the text contents
+          when more than one color tag was passed into the function's text node.
+        -Cleaned up some syntactical issues in DokuWikiFCK.pm:
+		1. additional code for the the _indent function, which now insures that
+            the entire parentage of indent tags is searched for background colors. 
+            This assists the FireFox FCKeditor problem where the indent characters
+            sometimes print as '?' or middle dots to the screen.
+	       2. code in postprocess_output() to removed duplicate unused indent tags
+               3. similar code in _span to handle color tags   
+
+0.18  Sunday Feb 24 2008
+      - Restored <br /> pattern to indent.php, which is used for tables where a <td> has more
+        than one line in cell.
+      -  Now return empty string from _plugin(), where the plugin element is passed through without
+         a syntax pattern between the tags.
+
+     Monday Feb 25 2008
+      - Added code to postprocess_output() to handle URL's that have not been set using the FCK
+        toolbar item for URL's. 
+      - In _span_contents(): added code to escape regex for $current_text and code to add $current_text
+        back to $text string where no font or color attributes have been set. $current_text 
+        is any font or color information already formatted into FCK syntax when the string is passed
+        in to _span_contents(). 
+      - Added new function _formats() to deal with bold, underline, ins, and italic formats. It cleans up
+        formatted text, makes sure its valid, i.e. that what is being formatted is in fact
+        text (not non-text characters), and eliminates duplicate formatting markup. 
+
+     Tuesday Feb 26 2008
+      - Added facility to convert FCK extended syntax to native DokuWiki Syntax.       
+
+0.20  Tuesday April 8 2008
+      There have been various undocumented changes made to DokuWikiFCK.pm to fix anomolies and
+      irregularities in the translation of FCKeditor the extended markup.  The lock timer
+      has been hidden from trhe user and is now automatically disabled.  There have been imporvements
+      to image uploading and inserting from the FCK editor toolbar image tool. This includes
+      an improved facility to create multliple userfile directories where there is more than
+      one DW installation on a server. 
+
+0.21 Thursday May 8 2008
+     - Added facility for creating table header elements.  These are consistent with the standard
+        DokWiki TH style.   
+
+     Friday May 9 2008
+     - Corrected Section 4 of README with respect to handling of path to /userfiles/ directory in
+     situations where the userfiles directory is not found in the Document Root directory. 

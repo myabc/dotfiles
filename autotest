@@ -1,0 +1,47 @@
+# -*- ruby -*-
+
+# NOTE Copy this to your home folder as .autotest
+#
+# Originally from http://wincent.com/knowledge-base/Setting_up_autotest_to_use_Growl
+#
+# Modifications:
+#   * Minor refactoring to use .autotest_images directory 
+#     [Geoffrey Grosenbach http://peepcode.com]
+#   * Test::Unit compatibility [Pat Nakajima] 
+# 
+require 'autotest/redgreen'
+
+module Autotest::Growl
+
+ AUTOTEST_IMAGE_ROOT = "~/.autotest_images"
+
+ def self.growl title, msg, img, pri=0, sticky=""
+   system "growlnotify -n autotest --image #{img} -p #{pri} -m #{msg.inspect} #{title} #{sticky}"
+ end
+
+ def self.growl_fail(output)
+   growl "FAIL", "#{output}", "#{AUTOTEST_IMAGE_ROOT}/fail.png", 2
+ end
+
+ def self.growl_pass(output)
+   growl "Pass", "#{output}", "#{AUTOTEST_IMAGE_ROOT}/pass.png"
+ end
+
+ Autotest.add_hook :ran_command do |at|
+
+   results = [at.results].flatten.join("\n")
+
+   if results.include? 'tests'
+     output = results.slice(/(\d+)\s+tests?,\s*(\d+)\s+assertions?,\s*(\d+)\s+failures?(,\s*(\d+)\s+errors)?/)
+     if output
+       $~[3].to_i + $~[5].to_i > 0 ? growl_fail(output) : growl_pass(output)
+     end
+   else
+     output = results.slice(/(\d+)\s+examples?,\s*(\d+)\s+failures?(,\s*(\d+)\s+not implemented)?/)
+     if output
+       $~[2].to_i > 0 ? growl_fail(output) : growl_pass(output)
+     end
+   end
+ end
+
+end

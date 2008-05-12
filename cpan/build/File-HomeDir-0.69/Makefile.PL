@@ -1,0 +1,34 @@
+use strict;
+use inc::Module::Install;
+
+name           'File-HomeDir';
+all_from       'lib/File/HomeDir.pm';
+requires       'Carp'       => 0;
+requires       'Cwd'        => $^O eq 'darwin' ? '3' : '3.12';
+requires       'File::Spec' => $^O eq 'darwin' ? '3' : '3.12';
+build_requires 'Test::More' => '0.47';
+
+# Dependencies for specific platforms
+### Use variable twice to avoid a warning
+if ( $MacPerl::Version and $MacPerl::Version ) {
+	# Old Mac OS 9
+	requires 'Mac::Files'               => 0;
+
+} elsif ( $^O eq 'darwin' ) {
+	requires 'Mac::Carbon'              => '0.77';
+	requires 'Mac::Files'               => '1.09';
+
+} elsif ( $^O eq 'MSWin32' ) {
+	requires       'Win32'              => 0;
+	# Not entirely sure why this should be explicitly
+	# listed, as it's also a dep of Win32::TieRegistry,
+	# but apparently someone had a problem with it at
+	# some point in history, plus by specifying it here
+	# it prevents a CPAN client recursion, which is
+	# generally a Good Thing if you can prevent it.
+	requires       'Win32API::Registry' => '0.27';
+	requires       'Win32::TieRegistry' => '0.25';
+	build_requires 'ExtUtils::Install'  => '1.39';
+}
+
+WriteAll;

@@ -1,0 +1,23 @@
+# http://module-build.sourceforge.net/META-spec.html
+#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
+name:         HTML-WikiConverter
+version:      0.61
+version_from: lib/HTML/WikiConverter.pm
+installdirs:  site
+requires:
+    Carp:                          0
+    Class::Data::Inheritable:      0.02
+    CSS:                           0
+    Exporter:                      0
+    HTML::Element:                 0
+    HTML::Entities:                1.27
+    HTML::Tagset:                  3.04
+    HTML::Tree:                    3.18
+    Params::Validate:              0.77
+    Pod::Usage:                    1.16
+    Test::More:                    0
+    URI:                           1.35
+    URI::Escape:                   0
+
+distribution_type: module
+generated_by: ExtUtils::MakeMaker version 6.17

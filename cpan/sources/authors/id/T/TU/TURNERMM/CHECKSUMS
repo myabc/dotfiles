@@ -1,0 +1,53 @@
+0&&<<''; # this PGP-signed message is also valid perl
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+# CHECKSUMS file written on Fri May  9 21:21:09 2008 GMT by CPAN::Checksums (v1.064)
+$cksum = {
+  'HTML-WikiConverter-DokuWikiFCK-0.17.tar.gz' => {
+    'md5' => 'f39c2e4ae76ec7cbe9e0b98245e7f4e6',
+    'md5-ungz' => '36e479414418a524dde319c2ad8e7974',
+    'mtime' => '2008-02-22',
+    'sha256' => 'fafd04f9fad34422ce9a41f6afa9968ed3b9d5c494cc0310c49daaad91031d5d',
+    'sha256-ungz' => '49fbb537e4a6ffe07f620c5db1741be779ddd79748c20379280c1926161f5cd4',
+    'size' => '606526'
+  },
+  'HTML-WikiConverter-DokuWikiFCK-0.20.tar.gz' => {
+    'md5' => '9a225945fd693212ca7d6b1b52a6766f',
+    'md5-ungz' => 'e9347ee79048fcb8c2b56dad1a659990',
+    'mtime' => '2008-04-11',
+    'sha256' => 'b7f32922d75332d7f7715f2052512b994745a12e63043ad80c4bdb0184e26b81',
+    'sha256-ungz' => 'd26d132c5080256bf41f1bf2811c3a38192172cb38a332589df0996b840a6d9c',
+    'size' => '611005'
+  },
+  'HTML-WikiConverter-DokuWikiFCK-0.21.tar.gz' => {
+    'md5' => '7d5dffbab0500f68d14c3d8186ed7f0a',
+    'md5-ungz' => 'bf5a38fdaa45d3652e8af10bbc53bd36',
+    'mtime' => '2008-05-09',
+    'sha256' => '451625e5eee27060e77d3382add055b7e80a75c1a09fffb1e3e6fcfdb84d5d4e',
+    'sha256-ungz' => 'ad8f11d0264b4ee28c0a6dafc10ae9d4d0efa63e12ed3cc12e488b84fea6eeab',
+    'size' => '611529'
+  },
+  'Net-Z3950-AsyncZ-0.10.meta' => {
+    'md5' => 'd70e5808ee05a789309a1c3e3a766675',
+    'mtime' => '2004-08-10',
+    'sha256' => 'ed8e6ad3bbb7277764b0b9239039aed6e5e56371c6313ef6bd7961238f6e3607',
+    'size' => '462'
+  },
+  'Net-Z3950-AsyncZ-0.10.tar.gz' => {
+    'md5' => 'c80e819b7c70dc6cdf5053fca77d09b7',
+    'md5-ungz' => 'a34ca09ee2d8136228cd71b1d6e4d9d5',
+    'mtime' => '2004-08-10',
+    'sha256' => 'e6393d052bb1f4d6ef635fd20f8ec2597ffd5ff4b06b3876bdfbc8536b4cea32',
+    'sha256-ungz' => 'ea90ed819ec7f33cf301a80d9499127806c45a3eecf0d3e7a9b6dadbd5cbe108',
+    'size' => '131974'
+  }
+};
+__END__
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+
+iD8DBQFIJMBFMo2oZ0UPiewRAtWfAKCIzmc0GFaaaTQZ2Ay3/q9wc65ungCfTyFZ
+485FU2IkpOXLltGe+lF9dSw=
+=zTiP
+-----END PGP SIGNATURE-----
