@@ -5,7 +5,7 @@ if [ -f ~/.bashrc ]; then
 		. ~/.bashrc
 fi
 
-PATH=$HOME/bin:/usr/local/php5/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:$PATH:/usr/local/jruby/bin:/usr/local/mysql/bin
+PATH=$HOME/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:$PATH:/usr/local/jruby/bin:/usr/local/mysql/bin:/usr/local/php5/bin
 
 export ANT_HOME=/usr/bin/ant
 export M2_HOME=/usr/local/maven
@@ -15,3 +15,6 @@ export SVN_EDITOR='mate -w'
 export GIT_EDITOR='mate -w'
 
 export PATH
+
+# For DataMapper TESTING
+export MYSQL_SPEC_URI="mysql://root:WebWorx@localhost/dm_core_test?socket=/var/mysql/mysql.sock"

@@ -33,7 +33,7 @@ end
 desc 'Uninstall all RubyGems related to DataMapper'
 task 'dm:gems:wipe' do
   sudo = RUBY_PLATFORM =~ /win32|cygwin/ ? ("") : ("sudo")
-  ["dm-core", "merb_datamapper", "do_sqlite3", "do_mysql", "do_postgres", "data_objects"].each do |gem|
+  ["dm-core", "merb_datamapper", "dm-validations", "dm-timestamps", "do_sqlite3", "do_postgres", "do_mysql", "data_objects"].each do |gem|
     sh("#{sudo} gem uninstall #{gem} --all --ignore-dependencies --executables; true")
   end
 end
