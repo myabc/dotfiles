@@ -2,19 +2,29 @@
 
 # source .bashrc if it's there
 if [ -f ~/.bashrc ]; then
-		. ~/.bashrc
+    . ~/.bashrc
 fi
 
-PATH=$HOME/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:$PATH:/usr/local/jruby/bin:/usr/local/mysql/bin:/usr/local/php5/bin
-
+export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home
+export JRUBY_HOME=/usr/local/jruby
 export ANT_HOME=/usr/bin/ant
 export M2_HOME=/usr/local/maven
 export CATALINA_HOME=/usr/local/tomcat
-export EDITOR='mate -w'
+
+PATH=$HOME/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:$PATH:$JRUBY_HOME/bin:/usr/local/mysql/bin:/usr/local/php5/bin
+
+export EDITOR='mate'
+					# causes issues with crontab -e 
 export SVN_EDITOR='mate -w'
 export GIT_EDITOR='mate -w'
 
 export PATH
 
-# For DataMapper TESTING
-export MYSQL_SPEC_URI="mysql://root:WebWorx@localhost/dm_core_test?socket=/var/mysql/mysql.sock"
+if [ -f ~/.profile_private ]; then
+  . ~/.profile_private
+fi
+
+# For DataObjects / DataMapper TESTING
+export DO_MYSQL_SPEC_URI="mysql://root:$MYSQL_ROOT_PASS@localhost/do_mysql_test?socket=/var/mysql/mysql.sock"
+export DO_MYSQL_SPEC_JDBC_URI="jdbc:mysql://localhost:3306/do_mysql_test?user=root&password=$MYSQL_ROOT_PASS"
+export MYSQL_SPEC_URI="mysql://root:$MYSQL_ROOT_PASS@localhost/dm_core_test?socket=/var/mysql/mysql.sock"

@@ -1,27 +1,25 @@
 desc 'Clone a copy of the DataMapper repository and dependencies'
 task 'dm:clone' do
-  if File.directory?("dm") then
-    puts("./dm already exists!")
-    exit
+  require("pathname")
+  base_path = Pathname.getwd
+  unless (base_path.basename.to_s == "dm") then
+    base_path = (base_path + "dm")
+    base_path.mkdir unless base_path.directory?
+    cd(base_path)
   end
-  require("fileutils")
-  mkdir("dm")
-  cd("dm")
-  ["do", "dm-core", "dm-more"].each do |r|
-    sh("git clone git://github.com/sam/#{r}.git")
+  users = { "sam" => ["do", "dm-core", "dm-more"], "dkubb" => ["dm-dev"] }
+  users.each do |user, repos|
+    repos.each do |r|
+      path = (base_path + r)
+      next if path.directory?
+      sh("git clone git://github.com/#{user}/#{r}.git")
+    end
   end
 end
 
 desc 'Update your local DataMapper.  Run from inside the top-level dm directory.'
-task 'dm:update' do
-  repos = ["do", "dm-core", "dm-more"]
-  repos.each do |r|
-    unless File.directory?(r) then
-      puts("#{r} missing ... did you use dm:create to set this up?")
-      exit
-    end
-  end
-  repos.each do |r|
+task 'dm:update' => [ 'dm:clone' ] do
+  ["do", "dm-core", "dm-more", "dm-dev"].each do |r|
     puts("Updating #{r}")
     cd(r)
     sh("git fetch")
@@ -43,8 +41,8 @@ task 'dm:gems:refresh' => [ 'dm:gems:wipe', 'dm:update', 'dm:install' ] do
 
 end
 
-desc 'Install dm-core, dm-more and do'
-task 'dm:install' => [ 'dm:install:do', 'dm:install:core', 'dm:install:more' ] do
+desc 'Install dm-core, dm-more, dm-dev and do'
+task 'dm:install' => [ 'dm:install:do', 'dm:install:core', 'dm:install:dev', 'dm:install:more' ] do
 
 end
 
@@ -56,29 +54,17 @@ task 'dm:install:core' do
 end
 
 desc 'Install dm-more'
-task 'dm:install:more' => [ 'dm:install:more:timestamps', 'dm:install:more:validations', 'dm:install:more:merb_datamapper' ] do
-
+task 'dm:install:more' do
+  cd("dm-more")
+  sh("rake install; true")
+  cd("..")
 end
 
-desc 'Install dm-timestamps'
-task 'dm:install:more:timestamps' do
-  cd("dm-more/dm-timestamps")
+desc 'Install dm-dev'
+task 'dm:install:dev' do
+  cd("dm-dev")
   sh("rake install; true")
-  cd("../..")
-end
-
-desc 'Install dm-validations'
-task 'dm:install:more:validations' do
-  cd("dm-more/dm-validations")
-  sh("rake install; true")
-  cd("../..")
-end
-
-desc 'Install merb_datamapper'
-task 'dm:install:more:merb_datamapper' do
-  cd("dm-more/merb_datamapper")
-  sh("rake install; true")
-  cd("../..")
+  cd("..")
 end
 
 desc 'Install do drivers'
@@ -116,7 +102,11 @@ end
 
 desc 'Remove and reinstall DataMapper sake recipes'
 task 'dm:sake:refresh' do
-  tasks = ["dm:clone", "dm:gems:refresh", "dm:gems:wipe", "dm:install", "dm:install:core", "dm:install:do", "dm:install:do:data_objects", "dm:install:do:mysql", "dm:install:do:postgres", "dm:install:do:sqlite3", "dm:install:more", "dm:install:more:timestamps", "dm:install:more:validations", "dm:install:more:merb_datamapper", "dm:update", "dm:sake:refresh", "strip"]
+  tasks = []
+  `sake -T`.each do |line|
+    next unless match = line.match(/\Asake\s(dm:.+?|strip)\s/)
+    (tasks << match.captures.first)
+  end
   sh("sake -u #{(tasks * " ")}")
   sh("sake -i http://datamapper.org/dm-dev.sake")
 end
