@@ -7,7 +7,7 @@ task 'dm:clone' do
     base_path.mkdir unless base_path.directory?
     cd(base_path)
   end
-  users = { "sam" => ["do", "dm-core", "dm-more"], "dkubb" => ["dm-dev"] }
+  users = { "sam" => ["extlib", "do", "dm-core", "dm-more"], "dkubb" => ["dm-dev"] }
   users.each do |user, repos|
     repos.each do |r|
       path = (base_path + r)
@@ -18,8 +18,8 @@ task 'dm:clone' do
 end
 
 desc 'Update your local DataMapper.  Run from inside the top-level dm directory.'
-task 'dm:update' => [ 'dm:clone' ] do
-  ["do", "dm-core", "dm-more", "dm-dev"].each do |r|
+task 'dm:update', :needs => [ 'dm:clone' ] do
+  ["extlib", "do", "dm-core", "dm-more", "dm-dev"].each do |r|
     puts("Updating #{r}")
     cd(r)
     sh("git fetch")
@@ -30,20 +30,37 @@ end
 
 desc 'Uninstall all RubyGems related to DataMapper'
 task 'dm:gems:wipe' do
-  sudo = RUBY_PLATFORM =~ /win32|cygwin/ ? ("") : ("sudo")
-  ["dm-core", "merb_datamapper", "dm-validations", "dm-timestamps", "do_sqlite3", "do_postgres", "do_mysql", "data_objects"].each do |gem|
-    sh("#{sudo} gem uninstall #{gem} --all --ignore-dependencies --executables; true")
+  sudo = if ((ENV["SUDOLESS"] == "true") or RUBY_PLATFORM =~ /win32|cygwin/) then
+    ""
+  else
+    "sudo"
+  end
+  ["dm-core", "dm-more", "do_sqlite3", "do_postgres", "do_mysql", "data_objects", "extlib"].each do |gem|
+    if ["dm-more"].include?(gem) then
+      cd(gem)
+      sh("rake uninstall")
+      cd("..")
+    else
+      sh("#{sudo} gem uninstall #{gem} --all --ignore-dependencies --executables; true")
+    end
   end
 end
 
 desc 'Pull fresh copies of DataMapper and refresh all the gems'
-task 'dm:gems:refresh' => [ 'dm:gems:wipe', 'dm:update', 'dm:install' ] do
+task 'dm:gems:refresh', :needs => [ 'dm:sake:refresh', 'dm:gems:wipe', 'dm:update', 'dm:install' ] do
 
 end
 
-desc 'Install dm-core, dm-more, dm-dev and do'
-task 'dm:install' => [ 'dm:install:do', 'dm:install:core', 'dm:install:dev', 'dm:install:more' ] do
+desc 'Install extlib, do, dm-core, dm-dev and dm-more'
+task 'dm:install', :needs => [ 'dm:install:extlib', 'dm:install:do', 'dm:install:core', 'dm:install:dev', 'dm:install:more' ] do
 
+end
+
+desc 'Install extlib'
+task 'dm:install:extlib' do
+  cd("extlib")
+  sh("rake install; true")
+  cd("..")
 end
 
 desc 'Install dm-core'
@@ -68,7 +85,7 @@ task 'dm:install:dev' do
 end
 
 desc 'Install do drivers'
-task 'dm:install:do' => [ 'dm:install:do:data_objects', 'dm:install:do:postgres', 'dm:install:do:mysql', 'dm:install:do:sqlite3' ] do
+task 'dm:install:do', :needs => [ 'dm:install:extlib', 'dm:install:do:data_objects', 'dm:install:do:postgres', 'dm:install:do:mysql', 'dm:install:do:sqlite3' ] do
 
 end
 
@@ -109,6 +126,12 @@ task 'dm:sake:refresh' do
   end
   sh("sake -u #{(tasks * " ")}")
   sh("sake -i http://datamapper.org/dm-dev.sake")
+end
+
+desc 'Update the version number'
+task 'dm:update:version' do
+  versions = ENV.values_at("old", "new").map { |v| Regexp.escape(v) }
+  sh(("find dm-core dm-more extlib/* do/* -type f -exec perl -pi -e 's/\\b%s\\b/%s/g' {} \\;" % versions))
 end
 
 desc 'Strip trailing whitespace from source files'
