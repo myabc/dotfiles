@@ -1,0 +1,6 @@
+[ui]
+username = Alex Coles <alex@alexcolesportfolio.com>
+
+[hooks]
+pretxncommit.crlf = python:hgext.win32text.forbidcrlf
+
