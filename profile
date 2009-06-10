@@ -67,4 +67,9 @@ fi
 export POSTGRES_SPEC_URI="postgres://postgres:$MYSQL_ROOT_PASS@192.168.0.10/dm_core_test"
 #export SQLITE3_SPEC_URI="sqlite3://primary.db"
 
+
 alias netbeans-jdk6="/Applications/NetBeans/NetBeans\ 6.1.app/Contents/MacOS/netbeans --jdkhome /usr/local/soylatte/ --laf javax.swing.plaf.metal.MetalLookAndFeel"
+
+if [[ $OS_TYPE =~ $SYSTEM_OSX ]]; then
+  alias gvim='mvim'
+fi
