@@ -10,10 +10,3 @@ export LSCOLORS=gxfxcxdxbxegedabagacad
 source ~/.git-completion.sh
 PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
 # PS1="\$(~/.rvm/bin/rvm-prompt)$PS1"
-
-# -- start rip config -- #
-RIPDIR=/Users/alexbcoles/.rip
-RUBYLIB="$RUBYLIB:$RIPDIR/active/lib"
-PATH="$PATH:$RIPDIR/active/bin"
-export RIPDIR RUBYLIB PATH
-# -- end rip config -- #
