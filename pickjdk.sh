@@ -1,9 +1,16 @@
 #!/bin/bash
 #
-# Provides a function that allows you to choose a JDK.  Just set the environment 
+# Provides a function that allows you to choose a JDK.  Just set the environment
 # variable JDKS_ROOT to the directory containing multiple versions of the JDK
 # and the function will prompt you to select one.  JAVA_HOME and PATH will be cleaned
 # up and set appropriately.
+#
+# Adapted from a Gist by headius / nicksieger: http://gist.github.com/143128
+# With a few modifications inspired by:
+# http://confluence.concord.org/display/CCTR/Build+OpenJDK+Java+1.7.0+on+Mac+OS+X+10.5
+#
+# sudo mkdir -p /System/Library/Frameworks/JavaVM.framework/Versions/1.6.0-openjdk
+# sudo ln -s /opt/local/share/java/openjdk6 /System/Library/Frameworks/JavaVM.framework/Versions/1.6.0-openjdk/Home
 
 _macosx()
 {
