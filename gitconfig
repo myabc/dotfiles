@@ -3,28 +3,33 @@
 	email = alex@alexbcoles.com
 
 [alias]
-co = checkout
+  co = checkout
+  l = log --graph --pretty=format':%C(yellow)%h%Cblue%d%Creset %s %C(white) %an, %ar%Creset'
+  lol = log --pretty=oneline --abbrev-commit --graph --decorate
+  unstage = reset HEAD
+  staged = diff --cached
+  unstaged = diff
 
 [color]
-diff = auto
-status = auto
-branch = auto
+  diff = auto
+  status = auto
+  branch = auto
 
 [color "branch"]
-current = yellow reverse
-local = yellow
-remote = green
+  current = yellow reverse
+  local = yellow
+  remote = green
 
 [color "diff"]
-meta = yellow bold
-frag = magenta bold
-old = red bold
-new = green bold
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
 
 [color "status"]
-added = yellow
-changed = green
-untracked = cyan
+  added = yellow
+  changed = green
+  untracked = cyan
 
 [github]
 	user = myabc
