@@ -1,6 +1,6 @@
 [user]
-name = Alex Coles
-email = alex@alexcolesportfolio.com
+	name = Alex Coles
+	email = alex@alexbcoles.com
 
 [alias]
 co = checkout
@@ -26,3 +26,18 @@ added = yellow
 changed = green
 untracked = cyan
 
+[github]
+	user = myabc
+	token = fb68c18d658f3d2b6bf7fbd96dfa9ff9
+[difftool "Kaleidoscope"]
+	cmd = ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\"
+[difftool]
+	prompt = false
+[diff]
+	tool = Kaleidoscope
+[core]
+	editor = /usr/bin/vim
+	autocrlf = input
+[mergetool "diffmerge"]
+	cmd = diffmerge --merge --result=$MERGED $LOCAL $BASE $REMOTE
+	trustExitCode = false
