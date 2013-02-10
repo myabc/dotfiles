@@ -28,7 +28,6 @@ untracked = cyan
 
 [github]
 	user = myabc
-	token = fb68c18d658f3d2b6bf7fbd96dfa9ff9
 [difftool "Kaleidoscope"]
 	cmd = ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\"
 [difftool]
